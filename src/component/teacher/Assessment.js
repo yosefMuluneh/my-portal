@@ -3,7 +3,6 @@ import { useEffect,useState } from "react"
 import { useLoginContext } from "../../context"
 import Cookies from "js-cookie"
 import {IoIosArrowDropdownCircle,IoIosArrowDropupCircle} from 'react-icons/io'
-import { AiOutlineCloseCircle } from "react-icons/ai"
 
 const TeacherAssessment = () =>{
     const {setLogin} = useLoginContext()
@@ -23,6 +22,7 @@ const TeacherAssessment = () =>{
     const [classId,setClassId] = useState()
     const [success,setSuccess] = useState(false)
     const [isEdit,setIsEdit] = useState(false)
+    const [editValues,setEditValues] = useState({})
     const token = Cookies.get("token")
 
     const loadProfile = async()=>{
@@ -158,6 +158,47 @@ function sleep(ms) {
         setSuccess(false)
         setMessage(data.message)
         console.log(response.status)
+        await sleep(1500)
+        setMessage("")
+        
+    }
+
+
+    const handleEditChange = (index,event,tobeEdited,myBaseMark)=>{
+      const newInputValues = { ...editValues };
+      const mylist = newInputValues[index] ? newInputValues[index] : {}
+      mylist[tobeEdited]=[parseFloat(event.target.value),myBaseMark]
+      newInputValues[index] = mylist;
+      setEditValues(newInputValues);
+      console.log(newInputValues)
+    }
+
+    const editAssessment =async () =>{
+      const response = await fetch(`http://localhost:3030/teacher/edit-assessment/${classId}/${mysubject}`,{
+            method:'put',
+            credentials:"include",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":`Bearer ${token}`
+            },
+            body:JSON.stringify({
+              editValues
+            })
+        })
+        const data = await response.json()
+        if (response.status === 201){
+          setSuccess(true)
+          setMessage(data.message)
+          loadStudentAssessment(classId)
+          await sleep(1500)
+          setMessage("")
+          setPopup(false)
+        }
+        setSuccess(false)
+        setMessage(data.message)
+        console.log(response.status)
+        await sleep(1500)
+        setMessage("")
     }
 
     const addAssess = (
@@ -237,7 +278,7 @@ function sleep(ms) {
                 {
                assessType[mysubject] ? assessType[mysubject].map(eachasses=>(
                 <div >
-                <input className="w-20 border-2 border-gray-200 focus:border-gray-400 focus:outline-none px-4 py-2 rounded" label="new mark"  variant="standard" key={eachasses} placeholder={oursAssessments[eachId][eachasses]?oursAssessments[eachId][eachasses][0]:""}></input> 
+                <input onChange={e=>{handleEditChange(eachId,e,eachasses,oursAssessments[eachId][eachasses]?JSON.parse(oursAssessments[eachId][eachasses])[1]:"")}} className="w-20 border-2 border-gray-200 focus:border-gray-400 focus:outline-none px-4 py-2 rounded" label="new mark"  variant="standard" key={eachasses} placeholder={oursAssessments[eachId][eachasses]?JSON.parse(oursAssessments[eachId][eachasses])[0]:""}></input> 
                   </div>
    )):""
    }</div>
@@ -246,10 +287,14 @@ function sleep(ms) {
         </div>
     }
     <div className="flex flex-row gap-4">
-    <Button className="w-64 bg-gray-900" size={32}>Confirm and Submit</Button>
+    <Button onClick={editAssessment} className="w-64 bg-gray-900" >Confirm and Submit</Button>
     <Button className="w-64 hover:bg-red-900 hover:text-white" color="red" variant="outlined" onClick={()=>{setPopup(false);setIsEdit(false)}} size={32}>cancel</Button>
     </div>
+    <div>
+              <p className={success ? "text-green-500" : "text-red-500"}>{message}</p>
+            </div>
     </form>
+    
     </div>
     </div>
     )
@@ -298,7 +343,7 @@ function sleep(ms) {
       </div>
       {
         dropped === eachclass ? <div className="w-full max-w-screen my-4 ">
-            <div className="flex relative flex-row justify-between mb-2">
+            <div className="flex relative flex-row items-start justify-between mb-2">
             <h3 className="mb-4 text-gray-900 text-lg">Students</h3>
             <div className="flex flex-row gap-3">
             <Button onClick={()=>setPopup(true)} size="sm" className="bg-blue-gray-900"><span>Add New</span> <span className="font-bold lg:text-2xl text-xl"> +</span>  </Button>
@@ -307,16 +352,16 @@ function sleep(ms) {
             </div>
             {
                 studentsId.length === 0 ? <p>No students</p> : 
-                <div className="overflow-x-auto  flex flex-col items-start  w-full ">
-                    <div className="flex flex-row lg:w-full md:w-full px-4 py-3 rounded-t font-bold bg-gray-300 "> 
-                    <div className="flex  flex-row gap-3 items-center">
+                <div className="overflow-x-auto  flex flex-col items-start  ">
+                    <div className="flex flex-row items-start px-4 py-3 rounded-t font-bold bg-gray-300 "> 
+                    <div className="flex  flex-row gap-3 items-start">
                     <h3 className="w-36">Student Name</h3>
                         <h3 className="w-36">Student Id</h3>
                         
                        </div> 
                        <div className="">
                         {
-                        <div className="flex flex-row gap-3  sm:mx-0 items-center justify-between">
+                        <div className="flex flex-row gap-3  sm:mx-0 items-start justify-between">
                             {
                       assessType[mysubject] ?  assessType[mysubject].map(eachasses=>(
                         <h3 className="w-20"  key={eachasses}>{eachasses} </h3> 
@@ -327,7 +372,7 @@ function sleep(ms) {
                     </div>
                     {
                 studentsId.map(eachId=>(
-                    <div key={eachId} className="flex flex-row lg:w-full md:w-full px-4 py-2 bg-gray-200 my-1 ">
+                    <div key={eachId} className="flex flex-row  px-4 py-2 bg-gray-200 my-1 ">
                         <div className="flex  flex-row gap-3 items-center">
                         <p className="w-36">{students[eachId]}</p>
                         <p className="w-36">{eachId}</p>
@@ -337,7 +382,7 @@ function sleep(ms) {
 
                         {
                        assessType[mysubject] ? assessType[mysubject].map(eachasses=>(
-                        <h3 className="w-20 " key={eachasses}>{ oursAssessments[eachId][eachasses]?oursAssessments[eachId][eachasses][0]:""}</h3> 
+                        <h3 className="w-20 " key={eachasses}>{ oursAssessments[eachId][eachasses]?JSON.parse(oursAssessments[eachId][eachasses])[0]:""}</h3> 
             
            )):""
            }</div>

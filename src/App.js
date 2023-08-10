@@ -3,6 +3,7 @@ import Nav from './component/Nav';
 import Login from './Login';
 import News from './component/student/News';
 import Chat from './component/student/Chat';
+import ChatClass from './component/teacher/Chat';
 import Register from './component/admin/Register';
 import AssignTeacher from './component/admin/AssignTeacher'
 import './App.css';
@@ -15,6 +16,7 @@ import Assessement from './component/student/Assessment';
 import Grade from './component/student/Grade';
 import withAuth from './authorize';
 import TeacherAssessment from './component/teacher/Assessment';
+import GradeSubmit from './component/teacher/GradeSubmit';
 
 function App() {
   const [auth,setAuth]=useState('')
@@ -40,6 +42,9 @@ function App() {
         <Route path="/my-grade" element={<Grade/>}></Route>
         <Route path='/student-chat' element={<Chat/>}></Route>
         <Route path="/assess-students" element={<TeacherAssessment/>}></Route>
+        <Route path="/chat-classes" element={<ChatClass/>}></Route>
+        <Route path="/submit-grade" element={<GradeSubmit/>}></Route>
+
     </Routes>
     </BrowserRouter>
     </div>

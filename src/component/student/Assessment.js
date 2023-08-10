@@ -90,8 +90,8 @@ assessments?.map((assessment) => (
            { assessType[assessment?.mycourse].map(eachasses=>(
           <div className="flex flex-row  items-center justify-between py-2 bg-gray-200 my-1 hover:bg-gray-300 gap-24 lg:px-16 md:px-16">
             <p className="font-bold mr-0  flex items-center justify-center">{eachasses} </p> 
-            <p> {JSON.parse(assessment?.assessments)[eachasses][1]}</p>
-             <p > {JSON.parse(assessment?.assessments)[eachasses][0]}</p>
+            <p> {JSON.parse(JSON.parse(assessment?.assessments)[eachasses])[1]}</p>
+             <p > {JSON.parse(JSON.parse(assessment?.assessments)[eachasses])[0]}</p>
              </div> 
            ))}
     
