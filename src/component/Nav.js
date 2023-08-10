@@ -116,14 +116,13 @@ export default function Nav() {
           <><span className="text-3xl sm:pl-0 lg:px-0 ">Kingdom School Portal</span></>
         </Typography>
         <div className="hidden lg:block">{navList}</div>
-        <div className="md:absolute lg:relative md:right-4 sm:absolute sm:right-4">
+        <div className="md:absolute bg-green-500 lg:relative md:right-4 sm:absolute sm:right-4">
         <Avatar src={profile2}   alt="avatar" />
-        <Button variant="outlined" className="hover:bg-red-700 ml-4 hover:text-white" onClick={logout} size="md" color="red">Logout</Button>
         </div>
        
         <IconButton
           variant="text"
-          className="ml-auto mr-4 h-6 w-6 absolute left-2 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+          className="ml-auto mr-16 mr-4 h-6 w-6 absolute left-2 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
           ripple={false}
           onClick={() => setOpenNav(!openNav)}
         >

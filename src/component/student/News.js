@@ -184,10 +184,13 @@ const News = () =>{
        <div className="flex gap-3">
       {
         myProfile?.myclass ?
-<div>
+<div className="flex flex-row gap-4">
 <p className="text-gray-800">Class : </p> 
         <p className="text-gray-400">{myProfile?.myclass}({myProfile?.classId})</p>
-</div>:""
+</div>:<div className="flex flex-row gap-4">
+<p className="text-gray-800">Educational Level : </p> 
+        <p className="text-gray-400">Masters of Science in Physics</p>
+</div>
       } 
         </div>
         <div className="flex gap-3">

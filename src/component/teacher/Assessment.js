@@ -22,6 +22,7 @@ const TeacherAssessment = () =>{
     const [inputValues,setInputValues] = useState({})
     const [classId,setClassId] = useState()
     const [success,setSuccess] = useState(false)
+    const [isEdit,setIsEdit] = useState(false)
     const token = Cookies.get("token")
 
     const loadProfile = async()=>{
@@ -152,6 +153,7 @@ function sleep(ms) {
           loadStudentAssessment(classId)
           await sleep(1500)
           setPopup(false)
+          setMessage("")
         }
         setSuccess(false)
         setMessage(data.message)
@@ -160,10 +162,9 @@ function sleep(ms) {
 
     const addAssess = (
         <div className="fixed z-20 inset-0 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center">
-      <div  className="my-element w-full px-6 py-4 relative bg-gray-200 rounded-lg">
+      <div  className="my-element  px-6 py-4 relative bg-gray-200 rounded-lg">
         <h2 className="px-4 ">Add New Assessement</h2>
-        <AiOutlineCloseCircle className="absolute right-6 top-6 cursor-pointer" size={24} onClick={()=>setPopup(false)} color="red"></AiOutlineCloseCircle>
-        <form className="flex flex-col gap-6 px-4 py-6 md:px-10 md:py-8 md:items-left w-full">
+        <form className="flex flex-col gap-6 px-4 py-6 md:px-10 md:py-8 ">
           <Input value={newAssess} onChange={e=>setNewAssess(e.target.value)} variant="standard" label="Assessment" />
           <Input value={baseMark} onChange={e=>setBaseMark(e.target.value)} variant="standard" label="Base mark"  />
         <div>
@@ -176,13 +177,14 @@ function sleep(ms) {
                         
                         </div>
                         <div className="flex flex-row gap-3 items-center justify-between">
-                    	<Input  onChange={e=>handleChange(eachId,e)} key={eachId} variant="outlined" label="mark" color="gray"  className="bg-white-900 border border-gray-500 text-gray-600 md:text-md rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 gray:bg-gray-500 gray:border-gray-500 gray:placeholder-gray-400 gray:text-gray focus:outline-none focus:border-2 placeholder-gray-400 focus:shadow-outline-gray"></Input>
+                    	<Input  onChange={e=>handleChange(eachId,e)} key={eachId} variant="outlined" label="mark" color="gray"  className="bg-white-900 border border-gray-500 text-gray-600 md:text-md rounded-lg focus:ring-gray-500 focus:border-gray-500 block p-2.5 gray:bg-gray-500 gray:border-gray-500 gray:placeholder-gray-400 gray:text-gray focus:outline-none focus:border-2 placeholder-gray-400 focus:shadow-outline-gray"></Input>
                        </div>
                     </div>
                 ))}
         </div>
-          <div className="flex flex-row w-full  lg:px-32 items-center justify-center">
-            <Button variant="outlined"  className="border-2 w-full  border-gray-700 text-gray-700 hover:bg-gray-900 hover:border-transparent hover:text-white"  onClick={submitAssessment} size="lg">Submit</Button>
+          <div className="flex flex-row gap-6  lg:px-32 items-center justify-center">
+            <Button variant="standard"  className="border-2 w-64   border-gray-700 text-gray-700 bg-gray-900 hover:border-transparent text-white"  onClick={submitAssessment} size="lg">Submit</Button>
+            <Button variant="outlined" color="red"  className="hover:bg-red-900 hover:border-transparent hover:text-white"  onClick={()=>setPopup(false)} size="lg">cancel</Button>
           
           </div>
           
@@ -195,6 +197,63 @@ function sleep(ms) {
     </div>
     )
 
+    const editPop = (
+      <div className="fixed z-20 inset-0 overflow-y-auto overflow-x-auto md:px-16 sm:px-4  bg-gray-500 bg-opacity-75 flex items-center justify-center">
+<div  className=" py-4 relative bg-gray-200 overflow-x-auto rounded-lg">
+        <h2 className="px-4 ">Edit Assessment</h2>
+        
+        <form className="flex flex-col gap-6 px-4 py-6 items-start md:px-10 md:py-8 md:items-left w-full">
+      
+      {
+        studentsId.length === 0 ? <p>No students</p> : 
+        <div className="overflow-x-auto max-w-screen">
+            <div className="flex flex-row  px-4 py-3 rounded-t font-bold bg-gray-400 max-w-screen whitespace-no-wrap"> 
+            <div className="flex  flex-row gap-3 items-center">
+            <h3 className="w-36">Student Name</h3>
+                <h3 className="w-36">Student Id</h3>
+                
+               </div> 
+               <div className="inherit">
+                {
+                <div className="flex flex-row gap-3  sm:mx-0 items-center justify-between whitespace-no-wrap">
+                    {
+              assessType[mysubject] ?  assessType[mysubject].map(eachasses=>(
+                <h3 className="w-20"  key={eachasses}>{eachasses} </h3> 
+
+    
+   )):""}</div>}
+            </div>
+            </div>
+            {
+        studentsId.map(eachId=>(
+            <div key={eachId} className="flex flex-row  px-4 py-2 bg-gray-300 my-1 ">
+                <div className="flex  flex-row gap-3 items-center">
+                <p className="w-36">{students[eachId]}</p>
+                <p className="w-36">{eachId}</p>
+                
+                </div>
+                <div className="flex flex-row gap-3 items-center justify-between">
+
+                {
+               assessType[mysubject] ? assessType[mysubject].map(eachasses=>(
+                <div >
+                <input className="w-20 border-2 border-gray-200 focus:border-gray-400 focus:outline-none px-4 py-2 rounded" label="new mark"  variant="standard" key={eachasses} placeholder={oursAssessments[eachId][eachasses]?oursAssessments[eachId][eachasses][0]:""}></input> 
+                  </div>
+   )):""
+   }</div>
+            </div>
+        ))}
+        </div>
+    }
+    <div className="flex flex-row gap-4">
+    <Button className="w-64 bg-gray-900" size={32}>Confirm and Submit</Button>
+    <Button className="w-64 hover:bg-red-900 hover:text-white" color="red" variant="outlined" onClick={()=>{setPopup(false);setIsEdit(false)}} size={32}>cancel</Button>
+    </div>
+    </form>
+    </div>
+    </div>
+    )
+
 
     useEffect(()=>{
         loadProfile()
@@ -204,7 +263,7 @@ function sleep(ms) {
         <div className="w-full lg:px-16">
             {
             popup ? (<div >
-                {addAssess}
+                {isEdit ? editPop : addAssess}
             </div>):(<div></div>)}
         <ul className="my-4  p-2.5 flex flex-col gap-4 w-full  ">
         <h3 className="text-2xl">Classes</h3>
@@ -216,13 +275,13 @@ function sleep(ms) {
       as="li"
       key={eachclass}
       color="blue-gray"
-      className="p-4 font-normal w-full hover:text-24 hover:bg-gray-100 border-1 border border-gray-300 rounded"
+      className="p-4 font-normal  hover:text-24 hover:bg-gray-100 border-1 border border-gray-300 rounded"
     >
           <h1 className="text-bold text-gray-900 text-xl">{eachclass.slice(0,-2)}</h1>
 
-      <div className="flex w-full relative flex-row items-center justify-between gap-6">
+      <div className=" relative">
         
-        <div className="absolute right-8  bottom-2 flex items-center flex-row gap-4">
+        <div className="absolute right-4  bottom-2 ">
             
           {dropped === eachclass ? (
             <IoIosArrowDropupCircle size={24} onClick={(e) => {setDropped(null);}} />
@@ -238,22 +297,26 @@ function sleep(ms) {
         </div>
       </div>
       {
-        dropped === eachclass ? <div className="px-8 my-4">
-            <div className="flex flex-row justify-between mb-2">
+        dropped === eachclass ? <div className="w-full max-w-screen my-4 ">
+            <div className="flex relative flex-row justify-between mb-2">
             <h3 className="mb-4 text-gray-900 text-lg">Students</h3>
-            <Button onClick={()=>setPopup(true)} className="bg-blue-gray-900"><span>Add Assessement</span> <span className="font-bold text-2xl"> +</span>  </Button>
+            <div className="flex flex-row gap-3">
+            <Button onClick={()=>setPopup(true)} size="sm" className="bg-blue-gray-900"><span>Add New</span> <span className="font-bold lg:text-2xl text-xl"> +</span>  </Button>
+            <Button onClick={()=>{setPopup(true);setIsEdit(true)}} variant="outlined" className="hover:bg-blue-700 hover:text-white border border:bg-gray-900"><span>Edit</span> </Button>
+            </div>
             </div>
             {
                 studentsId.length === 0 ? <p>No students</p> : 
-                <div>
-                    <div className="flex flex-row  px-4 py-3 rounded-t font-bold bg-gray-300"> 
+                <div className="overflow-x-auto  flex flex-col items-start  w-full ">
+                    <div className="flex flex-row lg:w-full md:w-full px-4 py-3 rounded-t font-bold bg-gray-300 "> 
                     <div className="flex  flex-row gap-3 items-center">
                     <h3 className="w-36">Student Name</h3>
                         <h3 className="w-36">Student Id</h3>
                         
                        </div> 
+                       <div className="">
                         {
-                        <div className="flex flex-row gap-3 items-center justify-between">
+                        <div className="flex flex-row gap-3  sm:mx-0 items-center justify-between">
                             {
                       assessType[mysubject] ?  assessType[mysubject].map(eachasses=>(
                         <h3 className="w-20"  key={eachasses}>{eachasses} </h3> 
@@ -261,9 +324,10 @@ function sleep(ms) {
             
            )):""}</div>}
                     </div>
+                    </div>
                     {
                 studentsId.map(eachId=>(
-                    <div key={eachId} className="flex flex-row  px-4 py-2 bg-gray-200 my-1">
+                    <div key={eachId} className="flex flex-row lg:w-full md:w-full px-4 py-2 bg-gray-200 my-1 ">
                         <div className="flex  flex-row gap-3 items-center">
                         <p className="w-36">{students[eachId]}</p>
                         <p className="w-36">{eachId}</p>
