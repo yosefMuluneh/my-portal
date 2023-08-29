@@ -26,6 +26,7 @@ const News = () =>{
 
     const {setLogin}=useLoginContext()
     const navigation = useNavigate()
+    const role = Cookies.get("role")
 
 
     function formatDate(updatedAt){
@@ -162,13 +163,13 @@ const News = () =>{
 </ul>
 </div>
 <div className="w-full flex pt-4 flex-col items-center">
-      <div className="w-full flex flex-col items-center bg-gray-100 rounded-lg  shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-grey-700 dark:border-grey-700">
+      <div  className="w-full flex flex-col items-center bg-gray-100 rounded-lg  shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-grey-700 dark:border-grey-700">
           <div className="px-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-grey-700 md:text-2xl dark:text-white">
                   My Account
               </h1>
               <Card className="w-full">
-      <CardHeader floated={false} className="h-80">
+      <CardHeader onClick={e=>navigation('/my-profile')} floated={false} className="h-80 hover:cursor-pointer">
       {<img src={myProfile ? profile2 : profile} className="w-full md:h-full"/>}
 
       </CardHeader>

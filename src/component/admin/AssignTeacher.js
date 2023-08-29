@@ -134,7 +134,7 @@ const AssignTeacher = () =>{
     >
       <div onClick={(e) => dropped === each.id ? setDropped(null):setDropped(each.id)} className="flex relative flex-row items-center justify-space-between gap-6">
       <div>
-          <p>{each.id.substring(0, each.id.length - 2)}</p>
+          <p className="font-bold text-xl">{each.id.substring(0, each.id.length - 2)}</p>
           <p className="text-12">class Id - {each.id}</p>
         </div>
         <div className="absolute right-4 flex flex-row gap-4">
@@ -156,15 +156,16 @@ const AssignTeacher = () =>{
             <div className="z-10">
               {
                 JSON.parse(each.courses).map(thecourse=>(
-                  <div key={thecourse} className="mb-4">
-<label htmlFor="dropdown1" className="block  flex flex-row items-center gap-1  text-gray-700">
-       <p className="text-xl sm:text-sm text-gray-900  font-bold ">{thecourse}</p>
-       <div className="my-container  mx-0 gap-2">
-        <div className="flex items-start  mx-0 ">
-        name -- {JSON.parse(each.teacher)[thecourse]?.toString().split(",")[0].substring(1)}
+                  <div  key={thecourse} className="text-md mb-8">
+<label htmlFor="dropdown1" className="block  flex flex-row justofy-between items-start gap-1  text-gray-700">
+       <p className=" sm:text-sm text-gray-900 w-full font-bold ">{thecourse}</p>
+       <div className="w-full  flex flex-row items-center justify-center">Assigned teacher : </div>
+       <div className="flex flex-row justify-between pr-32 items-start w-full mx-0 gap-2">
+        <div className="flex flex-col items-start  mx-0 font-bold">
+         {JSON.parse(each.teacher)[thecourse]?.toString().split(",")[0].substring(1)}
         </div>
-        <div>
-        Id -- {JSON.parse(each.teacher)[thecourse]?.toString().split(",")[1].slice(0,-1)}
+        <div >
+         {JSON.parse(each.teacher)[thecourse]?.toString().split(",")[1].slice(0,-1)}
           </div>  
       </div>
       </label>
@@ -177,7 +178,7 @@ const AssignTeacher = () =>{
         
         className="block w-full min-w-150  mt-1 py-2 pb-4 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-gray-600 focus:border-gray-600 sm:text-sm"
       >
-        <option  value={selectedOption1}>{ selectedOnes[thecourse+each.id] ? selectedOnes[thecourse+each.id]?.split("[")[1].split(",")[0]:JSON.parse(each.teacher)[thecourse]?JSON.parse(each.teacher)[thecourse]?.toString().split(",")[0].substring(1):"Select a teacher below"}</option>
+        <option className="py-4" value={selectedOption1}>{ selectedOnes[thecourse+each.id] ? selectedOnes[thecourse+each.id]?.split("[")[1].split(",")[0]:JSON.parse(each.teacher)[thecourse]?JSON.parse(each.teacher)[thecourse]?.toString().split(",")[0].substring(1):"Select a teacher below"}</option>
         {
           teachers.map(teacher=>(
             teacher.subject === thecourse ? <option key={teacher.id} value={`{ "${thecourse}":"[${teacher.fName} ${teacher.lName},${teacher.id}]" }`}>{teacher.fName} {teacher.lName}</option>:""

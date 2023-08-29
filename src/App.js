@@ -17,6 +17,7 @@ import Grade from './component/student/Grade';
 import withAuth from './authorize';
 import TeacherAssessment from './component/teacher/Assessment';
 import GradeSubmit from './component/teacher/GradeSubmit';
+import MyProfile from './component/MyProfile';
 
 function App() {
   const [auth,setAuth]=useState('')
@@ -44,7 +45,8 @@ function App() {
         <Route path="/assess-students" element={<TeacherAssessment/>}></Route>
         <Route path="/chat-classes" element={<ChatClass/>}></Route>
         <Route path="/submit-grade" element={<GradeSubmit/>}></Route>
-
+        <Route path="/my-profile" element={<MyProfile/>}></Route>
+        
     </Routes>
     </BrowserRouter>
     </div>

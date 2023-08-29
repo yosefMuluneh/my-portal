@@ -6,9 +6,7 @@ import backgroundimage from './backgroundimage.jpg'
 import {
   Card,
   CardBody,
-  CardFooter,
   Typography,
-  Button,
 } from "@material-tailwind/react";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
@@ -16,9 +14,9 @@ import { useEffect } from "react";
 const Login = () =>{
 
     const navigation = useNavigate()
-    const {login,setLogin} = useLoginContext()
+    const {setLogin} = useLoginContext()
     const {userId, setId} = useIdContext()
-    const {auth,setAuth} = useAuthContext()
+    const {setAuth} = useAuthContext()
     const [password,setPassword] = useState("")
     const [message,setMessage] = useState()
     const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +35,7 @@ const Login = () =>{
     }
 
     async function authorize(userId,userPassword){
+      console.log(userId)
         const response = await fetch("http://localhost:3030/auth/login",{
             method:"post",
             credentials:"include",
@@ -58,7 +57,7 @@ const Login = () =>{
             Cookies.set("role",payload.role)
             Cookies.set("userId",payload.userId)
             Cookies.set("myname",payload.fName+" "+payload.lName)
-            payload.role=="Admin"?navigation("admin/home"):navigation("/home")
+            payload.role==="Admin"?navigation("admin/home"):navigation("/home")
         }else{
             setMessage(payload.message)
             navigation("/")

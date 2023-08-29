@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import profile2 from '../profile2.webp'
+import profile from '../profile.png'
+
 import { useNavigate } from "react-router-dom";
 import {
   Navbar,
@@ -53,7 +55,7 @@ export default function Nav() {
           color="blue-gray"
           onClick={() => setActiveTab("home")}
           className={`p-1 font-normal hover:text-24 ${
-            activeTab === "/home" || activeTab === '/admin/home' ? "font-bold text-xl" : ""
+            activeTab === "/home" || activeTab === '/admin/home' ? "font-bold text-xl" : "font-normal"
           }`}
         >
           <a href={role==='Admin'? "/admin/home":"/home"} className="flex items-center" >
@@ -66,7 +68,7 @@ export default function Nav() {
           color="blue-gray"
           onClick={() => setActiveTab("assign-teacher")}
           className={`p-1 font-normal hover:text-24 ${
-            activeTab === "/assign-teacher" || activeTab === "/my-assessment" || activeTab === "/assess-students"? "font-bold text-xl" : ""
+            activeTab === "/assign-teacher" || activeTab === "/my-assessment" || activeTab === "/assess-students"? "font-bold text-xl" : "font-normal"
           }`}
         >
           <a href={role==='Admin'? "/assign-teacher":role==='Student'?"/my-assessment":"/assess-students"} className="flex items-center" >
@@ -80,7 +82,7 @@ export default function Nav() {
           color="blue-gray"
           onClick={() => setActiveTab("register-teacher")}
           className={`p-1 font-normal hover:text-24 ${
-            activeTab === "/register-teacher" || activeTab === "/student-chat" || activeTab === "/chat-classes" ? "font-bold text-xl" : ""
+            activeTab === "/register-teacher" || activeTab === "/student-chat" || activeTab === "/chat-classes" ? "font-bold text-xl" : "font-normal"
           }`}
         >
           <a href={role==='Admin'? "/register-teacher":role==='Student'?"/student-chat":"/chat-classes"} className="flex items-center" >
@@ -94,7 +96,7 @@ export default function Nav() {
           color="blue-gray"
           onClick={() => setActiveTab("register-student")}
           className={`p-1 font-normal hover:text-24 ${
-            activeTab === "/register-student" || activeTab === "/my-grade" || activeTab === "/submit-grade" ? "font-bold text-xl" : ""
+            activeTab === "/register-student" || activeTab === "/my-grade" || activeTab === "/submit-grade" ? "font-bold text-xl" : "font-normal"
           }`}
         >
           <a href={role==='Admin'? "/register-student":role==='Student'?"/my-grade":"/submit-grade"} className="flex items-center" >
@@ -106,7 +108,7 @@ export default function Nav() {
   );
  
   return (
-    <Navbar className="mx-auto max-w-screen-xl py-2 px-4 lg:px-0 lg:py-4">
+    <Navbar className="mx-auto  max-w-screen-xl py-2 px-4 lg:px-0 lg:py-4">
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
           
@@ -116,8 +118,8 @@ export default function Nav() {
           <><span className="text-3xl sm:pl-0 lg:px-0 ">Kingdom School Portal</span></>
         </Typography>
         <div className="hidden lg:block">{navList}</div>
-        <div className="md:absolute bg-green-500 lg:relative md:right-4 sm:absolute sm:right-4">
-        <Avatar src={profile2}   alt="avatar" />
+        <div className="md:absolute rounded lg:relative md:right-4 sm:absolute sm:right-4">
+        <Avatar src={profile2} className="hover:cursor-pointer" onClick={e=>navigation('my-profile')}  alt="avatar" />
         </div>
        
         <IconButton

@@ -155,7 +155,7 @@ const Home = () =>{
         }
     }
     const editPopUp = (
-        <div onClick={()=>setPopup(false)} className="fixed z-20 inset-0 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center">
+        <div  className="fixed z-20 inset-0 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center">
       <div  className="my-element w-full px-6 py-4 relative bg-gray-200 rounded-lg">
         <h2 className="px-4 ">{isUpdate ? 'Edit' : "Delete"} News or Announcement</h2>
         <AiOutlineCloseCircle className="absolute right-6 top-6 cursor-pointer" size={24} onClick={()=>setPopup(false)} color="red"></AiOutlineCloseCircle>

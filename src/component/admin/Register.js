@@ -48,8 +48,12 @@ const Register = () =>{
             setSuccess(true)
             getAllTeachers()
             setMessage(data.message)
+            await sleep(1500)
+            setMessage("")
         }else{
         setMessage(data.message)
+        await sleep(1500)
+        setMessage("")
     }
 }else{
     setIdAlreadyExist(true)
@@ -174,9 +178,18 @@ const Register = () =>{
   </div>
   <div className=" mb-4 mt-2 flex pt-10 flex-col lg:px-16 w-full gap-2 lg:mb-0 lg:mt-0  round lg:items-center md:items-center sm:items-center ">
   
-  <div className="flex flex-row items-center justify-between font-bold bg-gray-100 border rounded-t py-2 mb-0 w-full gap-24 px-12">
-            <p className="text-gray-900">Teacher</p>
-            <p className="text-gray-900">Teacher Id</p></div>
+  <div className="flex flex-row items-center justify-between font-bold bg-gray-100 border rounded-t py-2 mb-0 w-full  px-12">
+  <div className="flex flex-col  w-full justify-center items-start">
+  <p className="text-gray-900">Teacher</p>
+          </div>
+           
+          <div className="flex flex-col  w-full justify-center items-center">
+  <p className="text-gray-900">Teacher Id</p>
+          </div>
+          <div className="flex flex-col  w-full justify-center items-center">
+  <p className="text-gray-900">Course</p>
+          </div>
+            </div>
         <ul className=" lg:mx-8 py-2.5   w-full flex flex-col gap-4">
   {teachers.length === 0 ? (message) :
     teachers.map((teacher) => (
@@ -187,9 +200,17 @@ const Register = () =>{
         key={teacher.id}
         className="p-4 font-normal hover:text-24 hover:bg-gray-100 border-1 border border-gray-300 rounded"
       >
-        <a href='admin/home' className="flex flex-row items-center justify-between  gap-24 px-8">
+        <a href='admin/home' className="flex flex-row items-center justify-evenly  px-8">
+          <div className="flex flex-col  w-full justify-center items-start">
           {teacher.fName + " " + teacher.lName}
+          </div>
+          <div className="flex flex-col  w-full justify-center items-center" >
           <p className="text-12">{teacher.id}</p>
+            </div>
+            <div className="flex flex-col  w-full justify-center items-center">
+            <p className="text-12 ">{teacher.subject}</p>
+            </div>
+          
         </a>
       </Typography>
     ))
